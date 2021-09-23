@@ -1,0 +1,18 @@
+acme:
+  email_account: david@gee-family.net
+  staging: false
+  api_version: 2
+
+profiles:
+  - name: cloudflare
+    provider: cloudflare
+    provider_options: 
+      auth_token: --CLOUDFLARETOKEN--
+      zone_id: --CLOUDFLAREZONEID--
+    max_checks: 5
+
+certificates:
+  - name: pihole-cert
+    domains:
+      -  --HOSTNAME--
+    profile: cloudflare
