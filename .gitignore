@@ -4,3 +4,4 @@ dnsrobocert/config.yml
 letsencrypt/*
 lighttpd/external.conf
 pihole/*
+unbound/custom.conf
