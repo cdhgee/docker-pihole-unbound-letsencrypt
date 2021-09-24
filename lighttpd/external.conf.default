@@ -7,8 +7,8 @@ $HTTP["host"] == "--HOSTNAME--" {
   # Enable the SSL engine, only for this specific host
   $SERVER["socket"] == ":443" {
     ssl.engine = "enable"
-    ssl.pemfile = "/etc/letsencrypt/live/pihole-cert/fullchain.pem"
-    ssl.privkey = "/etc/letsencrypt/live/pihole-cert/privkey.pem"
+    ssl.pemfile = "/etc/lighttpd/certs/fullchain.pem"
+    ssl.privkey = "/etc/lighttpd/certs/privkey.pem"
     ssl.openssl.ssl-conf-cmd = (
       "MinProtocol" => "TLSv1.3"
     )
