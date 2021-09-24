@@ -1,0 +1,6 @@
+.env
+dnsmasq/*
+dnsrobocert/config.yml
+letsencrypt/*
+lighttpd/external.conf
+pihole/*
