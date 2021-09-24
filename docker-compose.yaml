@@ -1,0 +1,64 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    image: cbcrowe/pihole-unbound
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 4096
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    environment:
+      TZ: America/Chicago
+      WEBPASSWORD: "${WEBPASSWORD}"
+      DNSSEC: "true"
+      VIRTUAL_HOST: "${HOSTNAME}"
+      WEBTHEME: default-dark
+      PIHOLE_DNS_: "127.0.0.1#5335" 
+    networks:
+      pihole_net:
+        ipv4_address: 10.0.20.20
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./pihole:/etc/pihole
+      - ./dnsmasq:/etc/dnsmasq.d
+      - ./certs:/etc/lighttpd/certs:ro
+      - ./letsencrypt/live:/etc/letsencrypt/live:ro
+      - ./letsencrypt/archive:/etc/letsencrypt/archive:ro
+      - ./lighttpd/external.conf:/etc/lighttpd/external.conf
+      - ./unbound/custom.conf:/etc/unbound/unbound.conf.d/custom.conf
+    depends_on:
+      - letsencrypt
+    restart: unless-stopped
+  letsencrypt:
+    container_name: letsencrypt
+    image: adferrand/dnsrobocert
+    environment:
+      TIMEZONE: America/Chicago
+    networks:
+      pihole_net:
+        ipv4_address: 10.0.20.30
+    dns: 
+      - 1.1.1.1
+      - 1.0.0.1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./dnsrobocert/config.yml:/etc/dnsrobocert/config.yml:ro
+      - ./letsencrypt/live:/etc/letsencrypt/live
+      - ./letsencrypt/archive:/etc/letsencrypt/archive
+    restart: unless-stopped
+
+networks:
+  pihole_net:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.0.20.0/24
