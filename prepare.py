@@ -22,7 +22,7 @@ def get_default_file(srcfile):
 def replace_placeholders(lines, search, replace):
   
   for line in lines:
-    line = re.sub(search, replace, l)
+    line = re.sub(search, replace, line)
 
   return lines
 
