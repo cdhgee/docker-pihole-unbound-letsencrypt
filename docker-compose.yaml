@@ -1,4 +1,4 @@
-version: "3"
+version: "2.2"
 
 services:
   pihole:
@@ -19,10 +19,11 @@ services:
       DNSSEC: "true"
       VIRTUAL_HOST: "${HOSTNAME}"
       WEBTHEME: default-dark
-      PIHOLE_DNS_: "127.0.0.1#5335" 
+      PIHOLE_DNS_: "127.0.0.1#5335;::1#5335" 
     networks:
       pihole_net:
-        ipv4_address: 10.0.20.20
+        ipv4_address: "${PIHOLE_IPv4}"
+        ipv6_address: "${PIHOLE_IPv6}"
     dns:
       - 1.1.1.1
       - 1.0.0.1
@@ -45,7 +46,8 @@ services:
       TIMEZONE: America/Chicago
     networks:
       pihole_net:
-        ipv4_address: 10.0.20.30
+        ipv4_address: "${LETSENCRYPT_IPv4}"
+        ipv6_address: "${LETSENCRYPT_IPv6}"
     dns: 
       - 1.1.1.1
       - 1.0.0.1
@@ -58,7 +60,13 @@ services:
 
 networks:
   pihole_net:
-    driver: bridge
+    driver: macvlan
+    driver_opts:
+      parent: "${INTERFACE}"
+    enable_ipv6: true
     ipam:
-     config:
-       - subnet: 10.0.20.0/24
+      config:
+        - subnet: "${SUBNETv4}"
+          gateway: "${GWv4}"
+        - subnet: "${SUBNETv6}" 
+          gateway: "${GWv6}"
