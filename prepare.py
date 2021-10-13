@@ -61,6 +61,8 @@ stringOffset = input('Enter the IP offset for this Pi-hole [0]: ')
 if stringOffset == '':
   stringOffset = '0'
 
+envs['INTERFACE'] = input('Enter the parent interface to use: ')
+
 offset = int(stringOffset)
 
 ipv4network = ipaddress.IPv4Network(envs['SUBNETv4'])
