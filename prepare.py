@@ -37,7 +37,7 @@ def process_default_file(srcfile, destfile, replacements):
   lines = get_default_file(srcfile)
 
   for k in replacements:
-    lines = replace_placeholders(lines, k, replacements[k]
+    lines = replace_placeholders(lines, k, replacements[k])
 
   save_processed_file(destfile, lines)
   
