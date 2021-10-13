@@ -19,13 +19,6 @@ def get_default_file(srcfile):
 
   return lines
 
-def replace_placeholders(lines, search, replace):
-  
-  for line in lines:
-    line = re.sub(search, replace, line)
-
-  return lines
-
 def save_processed_file(destfile, lines):
 
   with open(destfile, 'w') as dest:
@@ -36,31 +29,32 @@ def process_default_file(srcfile, destfile, replacements):
 
   lines = get_default_file(srcfile)
 
-  for k in replacements:
-    lines = replace_placeholders(lines, k, replacements[k])
+  for i, s in enumerate(lines):
+    lines[i] = re.sub('--(\w+)--', lambda m: replacements.get(m.group(1), m.group(0)), lines[i])
+
   save_processed_file(destfile, lines)
   
 envs = {}
 
-envs['WEBPASSWORD'] = secret_input('Enter a password for the Pi-hole web UI: ')
+envs['WEBPASSWORD'] = secret_input('Pi-hole web UI password: ')
 
-envs['HOSTNAME'] = input('Enter a hostname or FQDN for the Pi-hole web UI: ')
+envs['HOSTNAME'] = input('Pi-hole web UI hostname or FQDN: ')
 
 
-apitoken = secret_input('Enter the Cloudflare API token: ')
+apitoken = secret_input('Cloudflare API token: ')
 
-zoneid = secret_input('Enter the Cloudflare zone ID: ')
+zoneid = secret_input('Cloudflare zone ID: ')
 
-envs['SUBNETv4'] = input('Enter the IPv4 subnet: ')
-envs['GWv4'] = input('Enter the IPv4 gateway: ')
-envs['SUBNETv6'] = input('Enter the IPv6 subnet: ')
-envs['GWv6'] = input('Enter the IPv6 gateway: ')
+envs['SUBNETv4'] = input('IPv4 subnet: ')
+envs['GWv4'] = input('IPv4 gateway: ')
+envs['SUBNETv6'] = input('IPv6 subnet: ')
+envs['GWv6'] = input('IPv6 gateway: ')
 
-stringOffset = input('Enter the IP offset for this Pi-hole [0]: ')
+stringOffset = input('IP offset for this Pi-hole [0]: ')
 if stringOffset == '':
   stringOffset = '0'
 
-envs['INTERFACE'] = input('Enter the parent interface to use: ')
+envs['INTERFACE'] = input('Parent interface to use: ')
 
 offset = int(stringOffset)
 
@@ -87,6 +81,6 @@ mkdirp(f'{basedir}/letsencrypt/live')
 mkdirp(f'{basedir}/letsencrypt/archive')
 mkdirp(f'{basedir}/dnsmasq')
 
-process_default_file('lighttpd/external.conf.default', 'lighttpd/external.conf', {'--HOSTNAME': envs['HOSTNAME']})
-process_default_file('dnsrobocert/config.yml.default', 'dnsrobocert/config.yml', {'--CLOUDFLARETOKEN--': apitoken, '--CLOUDFLAREZONEID--': zoneid})
+process_default_file('lighttpd/external.conf.default', 'lighttpd/external.conf', {'HOSTNAME': envs['HOSTNAME']})
+process_default_file('dnsrobocert/config.yml.default', 'dnsrobocert/config.yml', {'CLOUDFLARETOKEN': apitoken, 'CLOUDFLAREZONEID': zoneid})
 
