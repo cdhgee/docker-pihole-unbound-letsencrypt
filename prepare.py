@@ -38,7 +38,6 @@ def process_default_file(srcfile, destfile, replacements):
 
   for k in replacements:
     lines = replace_placeholders(lines, k, replacements[k])
-
   save_processed_file(destfile, lines)
   
 envs = {}
@@ -82,5 +81,5 @@ os.mkdir('./letsencrypt/archive')
 os.mkdir('./dnsmasq')
 
 process_default_file('lighttpd/external.conf.default', 'lighttpd/external.conf', {'--HOSTNAME': hostname})
-process_default_file('dnsrobocert/config.yml.default', 'dnsrobocert/config.yml', {'--CLOUDFLARETOKEN--': apitoken, '--CLOUDFLAREZONEID--', zoneid})
+process_default_file('dnsrobocert/config.yml.default', 'dnsrobocert/config.yml', {'--CLOUDFLARETOKEN--': apitoken, '--CLOUDFLAREZONEID--': zoneid})
 
