@@ -77,9 +77,9 @@ with open('.env', 'w') as f:
 
 basedir = os.path.join(os.path.dirname(__file__))
 
-os.mkdir(f'{basedir}/letsencrypt/live')
-os.mkdir(f'{basedir}/letsencrypt/archive')
-os.mkdir(f'{basedir}/dnsmasq')
+os.mkdirs(f'{basedir}/letsencrypt/live')
+os.mkdirs(f'{basedir}/letsencrypt/archive')
+os.mkdirs(f'{basedir}/dnsmasq')
 
 process_default_file('lighttpd/external.conf.default', 'lighttpd/external.conf', {'--HOSTNAME': hostname})
 process_default_file('dnsrobocert/config.yml.default', 'dnsrobocert/config.yml', {'--CLOUDFLARETOKEN--': apitoken, '--CLOUDFLAREZONEID--': zoneid})
