@@ -81,6 +81,6 @@ os.makedirs(f'{basedir}/letsencrypt/live')
 os.makedirs(f'{basedir}/letsencrypt/archive')
 os.makedirs(f'{basedir}/dnsmasq')
 
-process_default_file('lighttpd/external.conf.default', 'lighttpd/external.conf', {'--HOSTNAME': hostname})
+process_default_file('lighttpd/external.conf.default', 'lighttpd/external.conf', {'--HOSTNAME': envs['HOSTNAME']})
 process_default_file('dnsrobocert/config.yml.default', 'dnsrobocert/config.yml', {'--CLOUDFLARETOKEN--': apitoken, '--CLOUDFLAREZONEID--': zoneid})
 
