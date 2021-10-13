@@ -21,7 +21,7 @@ def get_default_file(srcfile):
 
 def replace_placeholders(lines, search, replace):
   
-  for line lin lines:
+  for line in lines:
     line = re.sub(search, replace, l)
 
   return lines
