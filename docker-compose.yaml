@@ -4,6 +4,7 @@ services:
   pihole:
     container_name: pihole
     image: cbcrowe/pihole-unbound
+    hostname: "${HOSTNAME}"
     ulimits:
       nofile:
         soft: 1024
