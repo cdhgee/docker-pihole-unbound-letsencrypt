@@ -21,7 +21,6 @@ services:
       VIRTUAL_HOST: "${HOSTNAME}"
       WEBTHEME: default-dark
       PIHOLE_DNS_: "127.0.0.1#5335;::1#5335" 
-      DNSMASQ_USER: pihole
     networks:
       pihole_net:
         ipv4_address: "${PIHOLE_IPv4}"
